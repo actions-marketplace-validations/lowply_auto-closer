@@ -1,9 +1,19 @@
 name: 'Auto Closer'
 author: 'Sho Mizutani <lowply@github.com>'
 description: 'A GitHub Action that closes all issues with a specific label while keeping the latest one(s) open.'
+inputs:
+  label:
+    description: 'The label that the target issues should have.'
+    required: true
+  keep:
+    description: 'The number of issues to keep open.'
+    required: false
+    default: '1'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - run: ${{ github.action_path }}/close.sh "${{ inputs.label }}" "${{ inputs.keep }}"
+      shell: bash
 branding:
   icon: 'check-circle'
   color: 'red'
